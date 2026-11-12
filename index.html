@@ -47,7 +47,8 @@
     window.RufflePlayer.config = {
       autoplay: "on",
       unmuteOverlay: "visible",
-      backgroundColor: "#000000"
+      backgroundColor: "#000000",
+      base: "https://coolmathgames.com/"
     };
 
     window.addEventListener("load", async () => {
@@ -62,7 +63,7 @@
         container.appendChild(player);
 
         statusBox.textContent = "Loading Run3.swf...";
-        await player.load("Run3.swf");
+        await player.load("https://marjamjelly.github.io/run3/Run3.swf");
         statusBox.style.display = "none";
       } catch (err) {
         statusBox.textContent = "ERROR: " + err.message;
