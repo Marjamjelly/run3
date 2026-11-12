@@ -34,7 +34,8 @@
     window.RufflePlayer.config = {
       autoplay: "on",
       unmuteOverlay: "visible",
-      backgroundColor: "#000000"
+      backgroundColor: "#000000",
+      base: "https://coolmathgames.com"
     };
 
     window.addEventListener("load", () => {
@@ -43,7 +44,7 @@
       const container = document.getElementById("game-container");
       
       container.appendChild(player);
-      player.load("Run3.swf");
+      player.load("https://marjamjelly.github.io/run3/Run3.swf");
     });
   </script>
 </body>
