@@ -8,7 +8,10 @@
     body {
       margin: 0;
       background-color: #000;
+      color: #ff5555;
+      font-family: monospace;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
@@ -23,28 +26,48 @@
       width: 100%;
       height: 100%;
     }
+    #status {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 5px 10px;
+    }
   </style>
-  <script src="https://unpkg.com"></script>
+  <script src="https://jsdelivr.net"></script>
 </head>
 <body>
+  <div id="status">Loading Ruffle...</div>
   <div id="game-container"></div>
 
   <script>
+    const statusBox = document.getElementById("status");
     window.RufflePlayer = window.RufflePlayer || {};
     window.RufflePlayer.config = {
       autoplay: "on",
       unmuteOverlay: "visible",
-      backgroundColor: "#000000",
-      base: "https://www.coolmathgames.com/"
+      backgroundColor: "#000000"
     };
 
-    window.addEventListener("load", () => {
-      const ruffle = window.RufflePlayer.newest();
-      const player = ruffle.createPlayer();
-      const container = document.getElementById("game-container");
-      
-      container.appendChild(player);
-      player.load("https://marjamjelly.github.io/run3/Run3.swf");
+    window.addEventListener("load", async () => {
+      try {
+        if (!window.RufflePlayer) {
+          throw new Error("Ruffle script failed to load from CDN.");
+        }
+        statusBox.textContent = "Starting player...";
+        const ruffle = window.RufflePlayer.newest();
+        const player = ruffle.createPlayer();
+        const container = document.getElementById("game-container");
+        container.appendChild(player);
+
+        statusBox.textContent = "Loading Run3.swf...";
+        await player.load("Run3.swf");
+        statusBox.style.display = "none";
+      } catch (err) {
+        statusBox.textContent = "ERROR: " + err.message;
+        console.error(err);
+      }
     });
   </script>
 </body>
