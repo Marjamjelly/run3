@@ -1,75 +1,103 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Play Run 3</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Play RUN 3</title>
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      background-color: #000;
-      color: #ff5555;
+      background: #000;
+      color: white;
       font-family: monospace;
+      min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      overflow: hidden;
     }
+
     #game-container {
-      width: 800px;
-      height: 600px;
-      max-width: 100vw;
-      max-height: 100vh;
+      width: min(100vw, 133.333dvh);
+      aspect-ratio: 4 / 3;
+      max-height: 100dvh;
     }
+
     ruffle-player {
+      display: block;
       width: 100%;
       height: 100%;
     }
+
     #status {
-      position: absolute;
+      position: fixed;
       top: 10px;
       left: 10px;
       z-index: 9999;
-      background: rgba(0, 0, 0, 0.8);
-      padding: 5px 10px;
+      background: #222;
+      color: white;
+      padding: 8px 12px;
+      font-size: 12px;
     }
   </style>
+
   <script src="./ruffle.js"></script>
 </head>
+
 <body>
   <div id="status">Loading Ruffle...</div>
   <div id="game-container"></div>
 
   <script>
     const statusBox = document.getElementById("status");
+
     window.RufflePlayer = window.RufflePlayer || {};
+
     window.RufflePlayer.config = {
       autoplay: "on",
       unmuteOverlay: "visible",
       backgroundColor: "#000000",
       scale: "exactfit",
       forceScale: true,
-      //base: "https://coolmathgames.com/"
+
+      compatibilityRules: true,
+      logLevel: "debug",
+
+      // Keep Flash networking enabled.
+      allowNetworking: "all"
     };
 
     window.addEventListener("load", async () => {
       try {
-        if (!window.RufflePlayer) {
-          throw new Error("Ruffle script failed to load from CDN.");
-        }
-        statusBox.textContent = "Starting player...";
+        statusBox.textContent = "Starting Ruffle...";
+
         const ruffle = window.RufflePlayer.newest();
         const player = ruffle.createPlayer();
-        const container = document.getElementById("game-container");
-        container.appendChild(player);
 
-        statusBox.textContent = "Loading Run3.swf...";
-        await player.load("https://www.snwiki.com/run3/run.swf");
+        document
+          .getElementById("game-container")
+          .appendChild(player);
+
+        statusBox.textContent = "Loading RUN 3...";
+
+        await player.load({
+          url: "./r3un.swf",
+          compatibilityRules: true,
+          logLevel: "debug"
+        });
+
         statusBox.style.display = "none";
+
       } catch (err) {
         statusBox.textContent = "ERROR: " + err.message;
-        console.error(err);
+        console.error("RUN 3 loading error:", err);
       }
     });
   </script>
